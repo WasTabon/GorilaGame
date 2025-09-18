@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float deceleration = 15f;
     [SerializeField] private float rotationSpeed = 720f;
     
+    [Header("Auto Movement Settings")]
+    [SerializeField] private float stopDistance = 0.1f;
+    
     [Header("Physics Settings")]
     [SerializeField] private float drag = 8f;
     
@@ -37,6 +40,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 targetVelocity;
     private bool wasMoving;
     
+    // Auto movement
+    private bool isAutoMoving = false;
+    private Vector3 targetPosition;
+    
     // Animation states
     private enum AnimationState
     {
@@ -52,13 +59,11 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
         
-        // Настройка Rigidbody для лучшего контроля
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.drag = drag;
         
-        // Поиск джойстика если не назначен
         if (joystick == null)
         {
             joystick = FindObjectOfType<Joystick>();
@@ -68,7 +73,6 @@ public class PlayerController : MonoBehaviour
             }
         }
         
-        // Поиск камеры если не назначена
         if (playerCamera == null)
         {
             playerCamera = Camera.main;
@@ -81,7 +85,15 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        HandleInput();
+        if (isAutoMoving)
+        {
+            HandleAutoMovement();
+        }
+        else
+        {
+            HandleInput();
+        }
+        
         HandleRotation();
         HandleAnimations();
     }
@@ -95,11 +107,9 @@ public class PlayerController : MonoBehaviour
     {
         if (joystick == null) return;
         
-        // Получаем ввод с джойстика
         float horizontal = joystick.Horizontal;
         float vertical = joystick.Vertical;
         
-        // Если есть камера, вычисляем направление относительно неё
         if (playerCamera != null)
         {
             Vector3 cameraForward = playerCamera.transform.forward;
@@ -117,18 +127,32 @@ public class PlayerController : MonoBehaviour
             moveDirection = new Vector3(horizontal, 0f, vertical).normalized;
         }
         
-        // Применяем мертвую зону
         if (moveDirection.magnitude < 0.1f)
         {
             moveDirection = Vector3.zero;
         }
     }
     
+    private void HandleAutoMovement()
+    {
+        Vector3 currentPos = new Vector3(transform.position.x, 0f, transform.position.z);
+        Vector3 targetPos = new Vector3(targetPosition.x, 0f, targetPosition.z);
+        
+        float distanceToTarget = Vector3.Distance(currentPos, targetPos);
+        
+        if (distanceToTarget <= stopDistance)
+        {
+            StopAutoMovement();
+            return;
+        }
+        
+        moveDirection = (targetPos - currentPos).normalized;
+    }
+    
     private void HandleMovement()
     {
         if (moveDirection.magnitude > 0.1f)
         {
-            // Плавное ускорение
             targetVelocity = moveDirection * moveSpeed;
             currentVelocity = Vector3.Lerp(currentVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
             
@@ -136,14 +160,12 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // Моментальный запуск анимации остановки
             if (wasMoving)
             {
                 wasMoving = false;
                 OnStopMoving();
             }
             
-            // Плавное замедление физики
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, deceleration * Time.fixedDeltaTime);
             
             if (currentVelocity.magnitude < 0.1f)
@@ -152,7 +174,6 @@ public class PlayerController : MonoBehaviour
             }
         }
         
-        // Применяем движение через Rigidbody
         Vector3 moveVelocity = currentVelocity;
         moveVelocity.y = rb.velocity.y;
         rb.velocity = moveVelocity;
@@ -183,21 +204,18 @@ public class PlayerController : MonoBehaviour
         
         float speed = currentVelocity.magnitude;
         
-        // Управление анимациями без проверки текущего состояния Animator
         if (currentAnimState != AnimationState.Stopping)
         {
             if (speed > 0.1f)
             {
-                // Переход в бег
                 if (currentAnimState != AnimationState.Running)
                 {
                     currentAnimState = AnimationState.Running;
-                    animator.Play(runAnimationName, 0, 0f); // Используем Play вместо CrossFade
+                    animator.Play(runAnimationName, 0, 0f);
                 }
             }
             else if (speed < 0.05f && !wasMoving)
             {
-                // Переход в Idle
                 if (currentAnimState != AnimationState.Idle)
                 {
                     currentAnimState = AnimationState.Idle;
@@ -219,7 +237,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // Если нет анимации остановки, сразу в Idle
             currentAnimState = AnimationState.Idle;
             if (animator != null)
             {
@@ -233,10 +250,8 @@ public class PlayerController : MonoBehaviour
         currentAnimState = AnimationState.Stopping;
         animator.CrossFade(stopAnimationName, 0.1f);
         
-        // Ждем пока анимация остановки проиграется
-        yield return new WaitForSeconds(0.5f); // Настройте под длину вашей анимации
+        yield return new WaitForSeconds(0.5f);
         
-        // Переход в idle только если всё еще не двигаемся
         if (!wasMoving && currentVelocity.magnitude < 0.05f)
         {
             currentAnimState = AnimationState.Idle;
@@ -244,7 +259,6 @@ public class PlayerController : MonoBehaviour
         }
         else if (wasMoving)
         {
-            // Если снова начали двигаться во время анимации остановки
             currentAnimState = AnimationState.Running;
             animator.Play(runAnimationName, 0, 0f);
         }
@@ -252,19 +266,15 @@ public class PlayerController : MonoBehaviour
         stopAnimationCoroutine = null;
     }
     
-    // Вспомогательные методы
-    public void SetMoveSpeed(float newSpeed)
+    public void MoveToPosition(Vector3 position)
     {
-        moveSpeed = Mathf.Max(0f, newSpeed);
+        targetPosition = position;
+        isAutoMoving = true;
     }
     
-    public void SetAcceleration(float newAcceleration)
+    public void StopAutoMovement()
     {
-        acceleration = Mathf.Max(0.1f, newAcceleration);
-    }
-    
-    public void SetDeceleration(float newDeceleration)
-    {
-        deceleration = Mathf.Max(0.1f, newDeceleration);
+        isAutoMoving = false;
+        moveDirection = Vector3.zero;
     }
 }
