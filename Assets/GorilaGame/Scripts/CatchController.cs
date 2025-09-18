@@ -10,7 +10,7 @@ public class CatchController : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera _mainCamera;
     [SerializeField] private CinemachineVirtualCamera _secondCamera;
     
-    private List<FoodType> _foods;
+    private List<GameObject> _foodsToSpawn;
     
     private void Awake()
     {
@@ -19,8 +19,6 @@ public class CatchController : MonoBehaviour
 
     private void Start()
     {
-        _foods = new List<FoodType>();
-
         SetMainCamera();
     }
 
