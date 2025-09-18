@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(CapsuleCollider))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private float acceleration = 12f;
     [SerializeField] private float deceleration = 15f;
-    [SerializeField] private float rotationSpeed = 720f; // градусов в секунду
+    [SerializeField] private float rotationSpeed = 720f;
     
     [Header("Physics Settings")]
     [SerializeField] private float drag = 8f;
@@ -36,10 +36,15 @@ public class PlayerController : MonoBehaviour
     private Vector3 currentVelocity;
     private Vector3 targetVelocity;
     private bool wasMoving;
-    private float lastMovementTime;
     
     // Animation states
-    private bool isStoppingAnimation;
+    private enum AnimationState
+    {
+        Idle,
+        Running,
+        Stopping
+    }
+    private AnimationState currentAnimState = AnimationState.Idle;
     private Coroutine stopAnimationCoroutine;
     
     void Start()
@@ -97,26 +102,22 @@ public class PlayerController : MonoBehaviour
         // Если есть камера, вычисляем направление относительно неё
         if (playerCamera != null)
         {
-            // Получаем forward и right направления камеры, но только по XZ плоскости
             Vector3 cameraForward = playerCamera.transform.forward;
             Vector3 cameraRight = playerCamera.transform.right;
             
-            // Убираем Y компоненту для движения только по XZ
             cameraForward.y = 0f;
             cameraRight.y = 0f;
             cameraForward.Normalize();
             cameraRight.Normalize();
             
-            // Вычисляем направление движения относительно камеры
             moveDirection = (cameraRight * horizontal + cameraForward * vertical).normalized;
         }
         else
         {
-            // Fallback - движение в мировых координатах
             moveDirection = new Vector3(horizontal, 0f, vertical).normalized;
         }
         
-        // Применяем мертвую зону для более точного контроля
+        // Применяем мертвую зону
         if (moveDirection.magnitude < 0.1f)
         {
             moveDirection = Vector3.zero;
@@ -131,36 +132,34 @@ public class PlayerController : MonoBehaviour
             targetVelocity = moveDirection * moveSpeed;
             currentVelocity = Vector3.Lerp(currentVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
             
-            // Сохраняем время последнего движения
-            lastMovementTime = Time.time;
             wasMoving = true;
         }
         else
         {
-            // Плавное замедление с инерцией
+            // Моментальный запуск анимации остановки
+            if (wasMoving)
+            {
+                wasMoving = false;
+                OnStopMoving();
+            }
+            
+            // Плавное замедление физики
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, deceleration * Time.fixedDeltaTime);
             
-            // Полная остановка при очень малой скорости
             if (currentVelocity.magnitude < 0.1f)
             {
                 currentVelocity = Vector3.zero;
-                if (wasMoving)
-                {
-                    wasMoving = false;
-                    OnStopMoving();
-                }
             }
         }
         
         // Применяем движение через Rigidbody
         Vector3 moveVelocity = currentVelocity;
-        moveVelocity.y = rb.velocity.y; // Сохраняем вертикальную скорость
+        moveVelocity.y = rb.velocity.y;
         rb.velocity = moveVelocity;
     }
     
     private void HandleRotation()
     {
-        // Поворачиваем персонажа в направлении движения
         if (currentVelocity.magnitude > 0.1f)
         {
             Vector3 lookDirection = currentVelocity.normalized;
@@ -184,22 +183,24 @@ public class PlayerController : MonoBehaviour
         
         float speed = currentVelocity.magnitude;
         
-        // Плавный переход между анимациями
-        if (!isStoppingAnimation)
+        // Управление анимациями без проверки текущего состояния Animator
+        if (currentAnimState != AnimationState.Stopping)
         {
             if (speed > 0.1f)
             {
-                // Бег
-                if (!animator.GetCurrentAnimatorStateInfo(0).IsName(runAnimationName))
+                // Переход в бег
+                if (currentAnimState != AnimationState.Running)
                 {
-                    animator.CrossFade(runAnimationName, 0.1f);
+                    currentAnimState = AnimationState.Running;
+                    animator.Play(runAnimationName, 0, 0f); // Используем Play вместо CrossFade
                 }
             }
             else if (speed < 0.05f && !wasMoving)
             {
-                // Idle
-                if (!animator.GetCurrentAnimatorStateInfo(0).IsName(idleAnimationName))
+                // Переход в Idle
+                if (currentAnimState != AnimationState.Idle)
                 {
+                    currentAnimState = AnimationState.Idle;
                     animator.CrossFade(idleAnimationName, 0.2f);
                 }
             }
@@ -208,7 +209,6 @@ public class PlayerController : MonoBehaviour
     
     private void OnStopMoving()
     {
-        // Запускаем анимацию остановки сразу без ожидания
         if (animator != null && !string.IsNullOrEmpty(stopAnimationName))
         {
             if (stopAnimationCoroutine != null)
@@ -217,11 +217,20 @@ public class PlayerController : MonoBehaviour
             }
             stopAnimationCoroutine = StartCoroutine(PlayStopAnimation());
         }
+        else
+        {
+            // Если нет анимации остановки, сразу в Idle
+            currentAnimState = AnimationState.Idle;
+            if (animator != null)
+            {
+                animator.CrossFade(idleAnimationName, 0.2f);
+            }
+        }
     }
     
     private IEnumerator PlayStopAnimation()
     {
-        isStoppingAnimation = true;
+        currentAnimState = AnimationState.Stopping;
         animator.CrossFade(stopAnimationName, 0.1f);
         
         // Ждем пока анимация остановки проиграется
@@ -230,13 +239,20 @@ public class PlayerController : MonoBehaviour
         // Переход в idle только если всё еще не двигаемся
         if (!wasMoving && currentVelocity.magnitude < 0.05f)
         {
+            currentAnimState = AnimationState.Idle;
             animator.CrossFade(idleAnimationName, 0.2f);
         }
-        isStoppingAnimation = false;
+        else if (wasMoving)
+        {
+            // Если снова начали двигаться во время анимации остановки
+            currentAnimState = AnimationState.Running;
+            animator.Play(runAnimationName, 0, 0f);
+        }
+        
         stopAnimationCoroutine = null;
     }
     
-    // Вспомогательные методы для настройки
+    // Вспомогательные методы
     public void SetMoveSpeed(float newSpeed)
     {
         moveSpeed = Mathf.Max(0f, newSpeed);
