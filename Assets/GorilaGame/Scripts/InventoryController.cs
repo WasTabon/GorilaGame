@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum FoodType
+{
+    
+}
 
 public class InventoryController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public static InventoryController Instance;
 
-    // Update is called once per frame
-    void Update()
+    
+    
+    private void Awake()
     {
-        
+        Instance = this;
     }
 }
