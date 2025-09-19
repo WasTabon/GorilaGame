@@ -44,6 +44,10 @@ public class PlayerController : MonoBehaviour
     private bool isAutoMoving = false;
     private Vector3 targetPosition;
     
+    // Manual movement states - изменено для работы с зажатием
+    private bool isMovingLeft = false;
+    private bool isMovingRight = false;
+    
     // Animation states
     private enum AnimationState
     {
@@ -88,6 +92,10 @@ public class PlayerController : MonoBehaviour
         if (isAutoMoving)
         {
             HandleAutoMovement();
+        }
+        else if (isMovingLeft || isMovingRight)
+        {
+            HandleManualMovement();
         }
         else
         {
@@ -147,6 +155,22 @@ public class PlayerController : MonoBehaviour
         }
         
         moveDirection = (targetPos - currentPos).normalized;
+    }
+    
+    private void HandleManualMovement()
+    {
+        if (isMovingLeft)
+        {
+            moveDirection = Vector3.back; // -Z direction
+        }
+        else if (isMovingRight)
+        {
+            moveDirection = Vector3.forward; // +Z direction
+        }
+        else
+        {
+            moveDirection = Vector3.zero; // Останавливаем движение если ни одна кнопка не зажата
+        }
     }
     
     private void HandleMovement()
@@ -266,6 +290,7 @@ public class PlayerController : MonoBehaviour
         stopAnimationCoroutine = null;
     }
     
+    // Public methods for auto movement
     public void MoveToPosition(Vector3 position)
     {
         targetPosition = position;
@@ -276,5 +301,75 @@ public class PlayerController : MonoBehaviour
     {
         isAutoMoving = false;
         moveDirection = Vector3.zero;
+    }
+    
+    public bool IsAutoMoving()
+    {
+        return isAutoMoving;
+    }
+    
+    public bool IsManualMoving()
+    {
+        return isMovingLeft || isMovingRight;
+    }
+    
+    public Vector3 GetTargetPosition()
+    {
+        return targetPosition;
+    }
+    
+    public float GetDistanceToTarget()
+    {
+        if (!isAutoMoving) return 0f;
+        
+        Vector3 currentPos = new Vector3(transform.position.x, 0f, transform.position.z);
+        Vector3 targetPos = new Vector3(targetPosition.x, 0f, targetPosition.z);
+        
+        return Vector3.Distance(currentPos, targetPos);
+    }
+    
+    // Методы для начала движения (вызывать при зажатии кнопки)
+    public void StartMoveLeft()
+    {
+        StopAutoMovement();
+        isMovingLeft = true;
+        isMovingRight = false;
+    }
+    
+    public void StartMoveRight()
+    {
+        StopAutoMovement();
+        isMovingLeft = false;
+        isMovingRight = true;
+    }
+    
+    // Методы для остановки движения (вызывать при отпускании кнопки)
+    public void StopMoveLeft()
+    {
+        isMovingLeft = false;
+    }
+    
+    public void StopMoveRight()
+    {
+        isMovingRight = false;
+    }
+    
+    // Универсальный метод остановки
+    public void StopMoving()
+    {
+        isMovingLeft = false;
+        isMovingRight = false;
+        moveDirection = Vector3.zero;
+    }
+    
+    // Старые методы для совместимости (но лучше использовать новые Start/Stop методы)
+    public void MoveLeft()
+    {
+        StartMoveLeft();
+    }
+    
+    public void MoveRight()
+    {
+        StartMoveRight();
     }
 }
