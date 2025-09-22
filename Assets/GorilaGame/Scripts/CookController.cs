@@ -7,6 +7,10 @@ public class CookController : MonoBehaviour
 {
     public static CookController Instance;
 
+    [SerializeField] private GameObject _cookParticle;
+    
+    [SerializeField] private FoodComboData _foodComboData;
+    
     [SerializeField] private GameObject _inventoryPanel;
     
     [SerializeField] private Image _icon1;
@@ -67,7 +71,34 @@ public class CookController : MonoBehaviour
         _icon2.sprite = icon;
         _inventoryPanel.SetActive(false);
     }
-    
+
+    private void Update()
+    {
+        if (isFood1 && isFood2)
+        {
+            isFood1 = false;
+            isFood2 = false;
+            isCook = false;
+            
+            _text1.gameObject.SetActive(true);
+            _food1 = FoodType.Banana;
+            _icon1.gameObject.SetActive(false);
+            _icon1.sprite = null;
+            
+            _text2.gameObject.SetActive(true);
+            _food2 = FoodType.Banana;
+            _icon2.gameObject.SetActive(false);
+            _icon2.sprite = null;
+
+            _cookParticle.SetActive(true);
+            
+            DOVirtual.DelayedCall(1f, () =>
+            {
+                _cookParticle.SetActive(false);
+            });
+        }
+    }
+
     public void StartCook()
     {
         isCook = true;

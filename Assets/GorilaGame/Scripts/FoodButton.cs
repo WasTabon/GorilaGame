@@ -12,10 +12,12 @@ public class FoodButton : MonoBehaviour
             if (CookController.Instance.isFood1 == false)
             {
                 CookController.Instance.SetFood1(food, sprite);
+                InventoryController.Instance.UseFood(food);
             }
             else if (CookController.Instance.isFood2 == false)
             {
                 CookController.Instance.SetFood2(food, sprite);
+                InventoryController.Instance.UseFood(food);
             }
         }
     }

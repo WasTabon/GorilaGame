@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a8f910120912c649b068bc6c59618ae, type: 3}
+  m_Name: ComboData
+  m_EditorClassIdentifier: 
+  foodCombinations:
+  - comboName: Banana Pizza
+    ingredients: 0000000001000000
+    comboIcon: {fileID: 0}
+  - comboName: Banana Milk
+    ingredients: 0000000002000000
+    comboIcon: {fileID: 0}
+  - comboName: Fish Banana
+    ingredients: 0000000003000000
+    comboIcon: {fileID: 0}
+  - comboName: Spicy Banana
+    ingredients: 0000000004000000
+    comboIcon: {fileID: 0}
+  - comboName: Banana Omelette
+    ingredients: 0000000005000000
+    comboIcon: {fileID: 0}
+  - comboName: Milk Pizza
+    ingredients: 0100000002000000
+    comboIcon: {fileID: 0}
+  - comboName: Fish Pizza
+    ingredients: 0100000003000000
+    comboIcon: {fileID: 0}
+  - comboName: Spicy Pizza
+    ingredients: 0100000004000000
+    comboIcon: {fileID: 0}
+  - comboName: Egg Pizza
+    ingredients: 0100000005000000
+    comboIcon: {fileID: 0}
+  - comboName: Fish Milk
+    ingredients: 0200000003000000
+    comboIcon: {fileID: 0}
+  - comboName: Spicy Milk
+    ingredients: 0200000004000000
+    comboIcon: {fileID: 0}
+  - comboName: Milk Egg
+    ingredients: 0200000005000000
+    comboIcon: {fileID: 0}
+  - comboName: Spicy Fish
+    ingredients: 0300000004000000
+    comboIcon: {fileID: 0}
+  - comboName: Fish Egg
+    ingredients: 0300000005000000
+    comboIcon: {fileID: 0}
+  - comboName: Pepper Egg
+    ingredients: 0400000005000000
+    comboIcon: {fileID: 0}
