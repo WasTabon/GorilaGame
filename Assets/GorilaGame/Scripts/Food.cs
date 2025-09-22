@@ -4,6 +4,8 @@ using UnityEngine;
 public class Food : MonoBehaviour
 {
     public FoodType foodType;
+
+    [SerializeField] private GameObject _particle;
     
     [Header("Physics Settings")]
     [SerializeField] private float fallSpeed = 3f;
@@ -51,9 +53,12 @@ public class Food : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             InventoryController.Instance.foodsInInventory.Add(foodType);
+            Instantiate(_particle, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
         if (collision.gameObject.CompareTag("Ground"))
         {
+            Instantiate(_particle, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
