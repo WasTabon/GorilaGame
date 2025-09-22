@@ -155,8 +155,26 @@ public class CatchController : MonoBehaviour
         
         SetMainCamera();
         HideGameButtons();
+        StartCoroutine(MovePlayerToEndSequence());
+    }
+    
+    private IEnumerator MovePlayerToEndSequence()
+    {
+        playerController.MoveToPosition(gameStartPosition.position);
+        
+        while (playerController.IsAutoMoving())
+        {
+            yield return null;
+        }
+        
         playerController.MoveToPosition(gameEndPosition.position);
-        StartCoroutine(WaitAndShowJoystick());
+        
+        while (playerController.IsAutoMoving())
+        {
+            yield return null;
+        }
+        
+        ShowJoystick();
     }
     
     private void HideGameButtons()
@@ -171,13 +189,8 @@ public class CatchController : MonoBehaviour
             .OnComplete(() => stopGameButton.gameObject.SetActive(false));
     }
     
-    private IEnumerator WaitAndShowJoystick()
+    private void ShowJoystick()
     {
-        while (playerController.IsAutoMoving())
-        {
-            yield return null;
-        }
-        
         joystick.gameObject.SetActive(true);
         joystick.transform.localScale = Vector3.zero;
         joystick.transform.DOScale(1f, animationDuration).SetEase(Ease.OutBack);
