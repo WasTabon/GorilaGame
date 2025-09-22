@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum FoodType
 {
@@ -15,6 +17,8 @@ public class InventoryController : MonoBehaviour
 {
     public static InventoryController Instance;
 
+    public FoodData foodData;
+    
     public GameObject foodCard;
     public RectTransform content;
     
@@ -34,6 +38,8 @@ public class InventoryController : MonoBehaviour
         foodsInInventory.Add(foodType);
         
         GameObject food = Instantiate(foodCard, content);
+        food.transform.Find("FoodIcon").GetComponent<Image>().sprite = foodData.GetFoodIcon(foodType);
+        food.GetComponentInChildren<TextMeshProUGUI>().text = foodData.GetFoodName(foodType);
         foodCardObjects.Add(food);
     }
 

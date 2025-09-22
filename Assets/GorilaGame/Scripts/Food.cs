@@ -53,12 +53,14 @@ public class Food : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             InventoryController.Instance.AddFood(foodType);
-            Instantiate(_particle, transform.position, Quaternion.identity);
+            if (_particle != null)
+                Instantiate(_particle, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         if (collision.gameObject.CompareTag("Ground"))
         {
-            Instantiate(_particle, transform.position, Quaternion.identity);
+            if (_particle != null)
+                Instantiate(_particle, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
