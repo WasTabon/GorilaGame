@@ -52,7 +52,7 @@ public class Food : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            InventoryController.Instance.foodsInInventory.Add(foodType);
+            InventoryController.Instance.AddFood(foodType);
             Instantiate(_particle, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
