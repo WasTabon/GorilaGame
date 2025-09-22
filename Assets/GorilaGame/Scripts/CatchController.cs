@@ -12,6 +12,7 @@ public class CatchController : MonoBehaviour
     [Header("Cameras")]
     [SerializeField] private CinemachineVirtualCamera _mainCamera;
     [SerializeField] private CinemachineVirtualCamera _secondCamera;
+    [SerializeField] private CinemachineVirtualCamera _thirdCamera;
     
     [Header("Player")]
     [SerializeField] private PlayerController playerController;
@@ -209,6 +210,7 @@ public class CatchController : MonoBehaviour
     public void SetMainCamera()
     {
         _secondCamera.gameObject.SetActive(false);
+        _thirdCamera.gameObject.SetActive(false);
         _mainCamera.gameObject.SetActive(true);
     }
     
@@ -216,5 +218,10 @@ public class CatchController : MonoBehaviour
     {
         _secondCamera.gameObject.SetActive(true);
         _mainCamera.gameObject.SetActive(false);
+    }
+    public void SetThirdCamera()
+    {
+        _mainCamera.gameObject.SetActive(true);
+        _thirdCamera.gameObject.SetActive(true);
     }
 }

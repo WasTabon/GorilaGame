@@ -40,6 +40,8 @@ public class InventoryController : MonoBehaviour
         GameObject food = Instantiate(foodCard, content);
         food.transform.Find("FoodIcon").GetComponent<Image>().sprite = foodData.GetFoodIcon(foodType);
         food.GetComponentInChildren<TextMeshProUGUI>().text = foodData.GetFoodName(foodType);
+        food.GetComponent<FoodButton>().food = foodType;
+        food.GetComponent<FoodButton>().sprite = foodData.GetFoodIcon(foodType);;
         foodCardObjects.Add(food);
     }
 
