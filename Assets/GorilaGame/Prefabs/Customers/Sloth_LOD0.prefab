@@ -268,7 +268,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &4068893065973041186
 MonoBehaviour:
@@ -284,6 +284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dialogueBox: {fileID: 2353043072952255698}
   _text: {fileID: 4988287651861709390}
+  _cookedFoodData: {fileID: 11400000, guid: 5205e86005349cb44a403afd058372ee, type: 2}
   _moveSpeed: 2
   _stopDistance: 0.1
 --- !u!1 &6831134856039091236
