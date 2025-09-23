@@ -1,12 +1,21 @@
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CookController : MonoBehaviour
 {
     public static CookController Instance;
 
+    [SerializeField] private CookedFoodData _cookedFoodData;
+    
+    [SerializeField] private Sprite _cantCookIcon;
+    
+    [SerializeField] private GameObject _comboPanel;
+    [SerializeField] private Image _comboIcon;
+    [SerializeField] private TextMeshProUGUI _comboName;
+    
     [SerializeField] private GameObject _cookParticle;
     
     [SerializeField] private FoodComboData _foodComboData;
@@ -92,9 +101,32 @@ public class CookController : MonoBehaviour
 
             _cookParticle.SetActive(true);
             
-            DOVirtual.DelayedCall(1f, () =>
+            DOVirtual.DelayedCall(1.5f, () =>
             {
-                // зробити тут крафт їди по комбінаціям і вивід панелі
+                // Проверяем крафт рецепта
+                FoodType[] ingredients = new FoodType[] { _food1, _food2 };
+
+                if (RecipeManager.Instance.CanCraftRecipe(ingredients, _foodComboData))
+                {
+                    FoodCombination data = _foodComboData.GetCombo(ingredients);
+                    _comboName.text = data?.comboName;
+                    _comboIcon.sprite = data?.comboIcon;
+                    _comboPanel.SetActive(true);
+        
+                    // Добавляем готовое блюдо в инвентарь
+                    if (data != null)
+                    {
+                        CookedFoodType cookedFoodType = _cookedFoodData.GetCookedFoodTypeByName(data.comboName);
+                        InventoryController.Instance.AddCookedFood(cookedFoodType);
+                    }
+                }
+                else
+                {
+                    _comboName.text = "You lost your ingredients";
+                    _comboIcon.sprite = _cantCookIcon;
+                    _comboPanel.SetActive(true);
+                }
+
                 _cookParticle.SetActive(false);
             });
         }

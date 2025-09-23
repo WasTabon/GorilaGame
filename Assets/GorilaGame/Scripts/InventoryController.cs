@@ -12,6 +12,24 @@ public enum FoodType
     Pepper,
     Egg
 }
+public enum CookedFoodType
+{
+    BananaPizza,
+    BananaMilk,
+    FishBanana,
+    SpicyBanana,
+    BananaOmelette,
+    MilkPizza,
+    FishPizza,
+    SpicyPizza,
+    EggPizza,
+    FishMilk,
+    SpicyMilk,
+    MilkEgg,
+    SpicyFish,
+    FishEgg,
+    PepperEgg
+}
 
 public class InventoryController : MonoBehaviour
 {
@@ -20,19 +38,27 @@ public class InventoryController : MonoBehaviour
     public int coins;
     
     public FoodData foodData;
+    public CookedFoodData cookedFoodData;
     
     public GameObject foodCard;
+    public GameObject cookedFoodCard;
     public RectTransform content;
+    public RectTransform cookedFoodContent;
     
     public List<FoodType> foodsInInventory;
+    public List<CookedFoodType> cookedFoodsInInventory;
+    
     private List<GameObject> foodCardObjects;
+    private List<GameObject> cookedFoodCardObjects;
     
     private void Awake()
     {
         Instance = this;
 
         foodsInInventory = new List<FoodType>();
+        cookedFoodsInInventory = new List<CookedFoodType>();
         foodCardObjects = new List<GameObject>();
+        cookedFoodCardObjects = new List<GameObject>();
     }
 
     public void AddFood(FoodType foodType)
@@ -43,8 +69,20 @@ public class InventoryController : MonoBehaviour
         food.transform.Find("FoodIcon").GetComponent<Image>().sprite = foodData.GetFoodIcon(foodType);
         food.GetComponentInChildren<TextMeshProUGUI>().text = foodData.GetFoodName(foodType);
         food.GetComponent<FoodButton>().food = foodType;
-        food.GetComponent<FoodButton>().sprite = foodData.GetFoodIcon(foodType);;
+        food.GetComponent<FoodButton>().sprite = foodData.GetFoodIcon(foodType);
         foodCardObjects.Add(food);
+    }
+
+    public void AddCookedFood(CookedFoodType cookedFoodType)
+    {
+        cookedFoodsInInventory.Add(cookedFoodType);
+        
+        GameObject cookedFood = Instantiate(cookedFoodCard, cookedFoodContent);
+        cookedFood.transform.Find("FoodIcon").GetComponent<Image>().sprite = cookedFoodData.GetCookedFoodIcon(cookedFoodType);
+        cookedFood.GetComponentInChildren<TextMeshProUGUI>().text = cookedFoodData.GetCookedFoodName(cookedFoodType);
+        cookedFood.GetComponent<CookedFoodButton>().cookedFood = cookedFoodType;
+        cookedFood.GetComponent<CookedFoodButton>().sprite = cookedFoodData.GetCookedFoodIcon(cookedFoodType);
+        cookedFoodCardObjects.Add(cookedFood);
     }
 
     private void UseFood(int index)
@@ -67,6 +105,29 @@ public class InventoryController : MonoBehaviour
         if (index != -1)
         {
             UseFood(index);
+        }
+    }
+
+    private void UseCookedFood(int index)
+    {
+        if (index >= 0 && index < cookedFoodsInInventory.Count)
+        {
+            cookedFoodsInInventory.RemoveAt(index);
+            
+            if (index < cookedFoodCardObjects.Count)
+            {
+                Destroy(cookedFoodCardObjects[index]);
+                cookedFoodCardObjects.RemoveAt(index);
+            }
+        }
+    }
+    
+    public void UseCookedFood(CookedFoodType cookedFoodType)
+    {
+        int index = cookedFoodsInInventory.IndexOf(cookedFoodType);
+        if (index != -1)
+        {
+            UseCookedFood(index);
         }
     }
 }
