@@ -15,6 +15,8 @@ public class RecipeItemUI : MonoBehaviour
     private int recipeIndex;
     private RecipePanelUI parentPanel;
 
+    private bool _isUpdated;
+
     public void Initialize(FoodCombination recipe, int index, RecipePanelUI parent)
     {
         this.recipe = recipe;
@@ -39,6 +41,8 @@ public class RecipeItemUI : MonoBehaviour
 
     public void UpdateDisplay()
     {
+        if (_isUpdated) return;
+        
         bool isUnlocked = RecipeManager.Instance.IsRecipeUnlocked(recipeIndex);
         bool canBuy = RecipeManager.Instance.CanBuyRecipe(recipeIndex);
 
@@ -46,7 +50,7 @@ public class RecipeItemUI : MonoBehaviour
         buyButton.gameObject.SetActive(!isUnlocked);
         unlockedText.gameObject.SetActive(isUnlocked);
         
-        buyButton.interactable = canBuy;
+        //buyButton.interactable = canBuy;
 
         // Визуальное отображение заблокированного состояния
         if (!isUnlocked)
@@ -58,11 +62,13 @@ public class RecipeItemUI : MonoBehaviour
         {
             recipeNameText.color = Color.white;
             ingredientsText.color = Color.white;
+            _isUpdated = true;
         }
     }
 
     private void OnBuyButtonClicked()
     {
+        Debug.Log("Buy");
         if (RecipeManager.Instance.BuyRecipe(recipeIndex))
         {
             UpdateDisplay();

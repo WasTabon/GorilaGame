@@ -167,8 +167,11 @@ public class RecipePanelEditor : EditorWindow
 
         // Viewport
         GameObject viewport = CreateUIObject("Viewport", scrollView.transform);
-        viewport.AddComponent<Image>().color = new Color(0, 0, 0, 0);
-        viewport.AddComponent<Mask>().showMaskGraphic = false;
+        Image viewportImage = viewport.AddComponent<Image>();
+        viewportImage.color = new Color(0, 0, 0, 0);
+        
+        Mask mask = viewport.AddComponent<Mask>();
+        mask.showMaskGraphic = false;
         
         RectTransform viewportRect = viewport.GetComponent<RectTransform>();
         viewportRect.anchorMin = Vector2.zero;
@@ -182,18 +185,31 @@ public class RecipePanelEditor : EditorWindow
         contentRect.anchorMin = new Vector2(0, 1);
         contentRect.anchorMax = new Vector2(1, 1);
         contentRect.pivot = new Vector2(0.5f, 1);
+        contentRect.anchoredPosition = Vector2.zero;
+        contentRect.sizeDelta = new Vector2(0, 0);
         
         // Добавляем VerticalLayoutGroup
         VerticalLayoutGroup layoutGroup = content.AddComponent<VerticalLayoutGroup>();
         layoutGroup.childAlignment = TextAnchor.UpperCenter;
         layoutGroup.spacing = 10;
         layoutGroup.padding = new RectOffset(10, 10, 10, 10);
+        layoutGroup.childForceExpandWidth = true;
+        layoutGroup.childControlWidth = true;
+        layoutGroup.childControlHeight = false;
         
         ContentSizeFitter sizeFitter = content.AddComponent<ContentSizeFitter>();
         sizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        sizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
 
         scrollRect.viewport = viewportRect;
         scrollRect.content = contentRect;
+        
+        // Важные настройки ScrollRect
+        scrollRect.movementType = ScrollRect.MovementType.Clamped;
+        scrollRect.elasticity = 0.1f;
+        scrollRect.inertia = true;
+        scrollRect.decelerationRate = 0.135f;
+        scrollRect.scrollSensitivity = 1.0f;
 
         return scrollView;
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,11 @@ public class RecipePanelUI : MonoBehaviour
         UpdateUI();
     }
 
+    private void Update()
+    {
+        UpdateUI();
+    }
+
     private void OnEnable()
     {
         UpdateUI();
@@ -39,7 +45,7 @@ public class RecipePanelUI : MonoBehaviour
     public void UpdateUI()
     {
         if (InventoryController.Instance != null)
-            coinsText.text = InventoryController.Instance.coins.ToString();
+            coinsText.text = $"Money: {InventoryController.Instance.coins}";
 
         foreach (var item in recipeItems)
         {

@@ -54,7 +54,11 @@ public class RecipeManager : MonoBehaviour
             SaveUnlockedRecipes();
             return true;
         }
-        return false;
+        else
+        {
+            Debug.Log("Cant Buy");
+            return false;   
+        }
     }
 
     public int GetRecipeCost()
