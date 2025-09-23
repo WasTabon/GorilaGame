@@ -286,7 +286,7 @@ MonoBehaviour:
   _text: {fileID: 4988287651861709390}
   _cookedFoodData: {fileID: 11400000, guid: 5205e86005349cb44a403afd058372ee, type: 2}
   _moveSpeed: 2
-  _stopDistance: 0.1
+  _stopDistance: 0.3
 --- !u!1 &6831134856039091236
 GameObject:
   m_ObjectHideFlags: 0
