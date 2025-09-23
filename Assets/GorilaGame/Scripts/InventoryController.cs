@@ -17,6 +17,8 @@ public class InventoryController : MonoBehaviour
 {
     public static InventoryController Instance;
 
+    public int coins;
+    
     public FoodData foodData;
     
     public GameObject foodCard;

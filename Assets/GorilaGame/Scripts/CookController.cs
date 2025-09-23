@@ -94,6 +94,7 @@ public class CookController : MonoBehaviour
             
             DOVirtual.DelayedCall(1f, () =>
             {
+                // зробити тут крафт їди по комбінаціям і вивід панелі
                 _cookParticle.SetActive(false);
             });
         }
