@@ -103,19 +103,23 @@ public class CookController : MonoBehaviour
             
             DOVirtual.DelayedCall(1.5f, () =>
             {
+                Debug.Log("Start Crafting");
+                
                 // Проверяем крафт рецепта
                 FoodType[] ingredients = new FoodType[] { _food1, _food2 };
 
                 if (RecipeManager.Instance.CanCraftRecipe(ingredients, _foodComboData))
                 {
+                    Debug.Log("Craft");
                     FoodCombination data = _foodComboData.GetCombo(ingredients);
                     _comboName.text = data?.comboName;
                     _comboIcon.sprite = data?.comboIcon;
                     _comboPanel.SetActive(true);
-        
+
                     // Добавляем готовое блюдо в инвентарь
                     if (data != null)
                     {
+                        Debug.Log("Added");
                         CookedFoodType cookedFoodType = _cookedFoodData.GetCookedFoodTypeByName(data.comboName);
                         InventoryController.Instance.AddCookedFood(cookedFoodType);
                     }
@@ -127,6 +131,7 @@ public class CookController : MonoBehaviour
                     _comboPanel.SetActive(true);
                 }
 
+                Debug.Log("Off");
                 _cookParticle.SetActive(false);
             });
         }

@@ -15,6 +15,6 @@ public class CookedFoodButton : MonoBehaviour
     {
         // Здесь можно добавить логику использования готовой еды
         // Например, удаление из инвентаря или другие действия
-        InventoryController.Instance.UseCookedFood(cookedFood);
+        //InventoryController.Instance.UseCookedFood(cookedFood);
     }
 }
