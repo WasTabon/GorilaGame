@@ -85,28 +85,31 @@ public class CookController : MonoBehaviour
     {
         if (isFood1 && isFood2)
         {
+            // СНАЧАЛА сохраняем ингредиенты
+            FoodType savedFood1 = _food1;
+            FoodType savedFood2 = _food2;
+        
             isFood1 = false;
             isFood2 = false;
-            isCook = false;
-            
+        
             _text1.gameObject.SetActive(true);
             _food1 = FoodType.Banana;
             _icon1.gameObject.SetActive(false);
             _icon1.sprite = null;
-            
+        
             _text2.gameObject.SetActive(true);
             _food2 = FoodType.Banana;
             _icon2.gameObject.SetActive(false);
             _icon2.sprite = null;
 
             _cookParticle.SetActive(true);
-            
+        
             DOVirtual.DelayedCall(1.5f, () =>
             {
                 Debug.Log("Start Crafting");
-                
-                // Проверяем крафт рецепта
-                FoodType[] ingredients = new FoodType[] { _food1, _food2 };
+            
+                // Используем сохраненные ингредиенты
+                FoodType[] ingredients = new FoodType[] { savedFood1, savedFood2 };
 
                 if (RecipeManager.Instance.CanCraftRecipe(ingredients, _foodComboData))
                 {

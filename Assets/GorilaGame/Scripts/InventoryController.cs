@@ -74,6 +74,12 @@ public class InventoryController : MonoBehaviour
         cookedFoodCardObjects = new List<GameObject>();
     }
 
+    [ContextMenu("Give coins")]
+    public void GiveCoins()
+    {
+        coins += 50;
+    }
+    
     public void AddFood(FoodType foodType)
     {
         foodsInInventory.Add(foodType);
