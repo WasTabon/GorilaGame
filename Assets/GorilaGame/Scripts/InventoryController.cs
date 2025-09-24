@@ -35,7 +35,18 @@ public class InventoryController : MonoBehaviour
 {
     public static InventoryController Instance;
 
-    public int coins;
+    private int _coins;
+
+    public int coins
+    {
+        get { return _coins; }
+        set 
+        { 
+            _coins = value;
+            PlayerPrefs.SetInt("PlayerCoins", _coins);
+            PlayerPrefs.Save();
+        }
+    }
     
     public FoodData foodData;
     public CookedFoodData cookedFoodData;
@@ -55,6 +66,8 @@ public class InventoryController : MonoBehaviour
     {
         Instance = this;
 
+        _coins = PlayerPrefs.GetInt("PlayerCoins", 0); 
+        
         foodsInInventory = new List<FoodType>();
         cookedFoodsInInventory = new List<CookedFoodType>();
         foodCardObjects = new List<GameObject>();

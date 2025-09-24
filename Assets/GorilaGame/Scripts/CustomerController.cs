@@ -18,11 +18,13 @@ public class CustomerController : MonoBehaviour
     private Transform _movePos2;
 
     private bool _isInitialized;
-    private bool _reachedDestination;
+    public bool _reachedDestination;
 
     private void Start()
     {
         _dialogueBox.DOScale(Vector3.zero, 0f);
+        
+        // доробити клієнтів і продаж і зробити прокачку
     }
 
     public void Initiallize(Transform movePos1, Transform movePo2)
