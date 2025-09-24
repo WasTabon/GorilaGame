@@ -53,6 +53,14 @@ public class Food : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             InventoryController.Instance.AddFood(foodType);
+        
+            // Показываем анимацию подбора еды
+            UIController uiController = FindObjectOfType<UIController>();
+            if (uiController != null)
+            {
+                uiController.ShowFoodPickupAnimation(foodType, transform.position);
+            }
+        
             if (_particle != null)
                 Instantiate(_particle, transform.position, Quaternion.identity);
             Destroy(gameObject);
