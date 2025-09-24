@@ -24153,7 +24153,7 @@ MonoBehaviour:
   sellButton: {fileID: 1285523201}
   playButton: {fileID: 1714362842}
   foodPickupText: {fileID: 227559171}
-  animationDuration: 0.3
+  animationDuration: 1
   fadeDistance: 50
   buttonAnimationDuration: 0.3
   animationEase: 27

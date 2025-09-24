@@ -95,17 +95,18 @@ public class UIController : MonoBehaviour
         string foodName = GetFoodName(foodType);
         foodPickupText.text = $"+1 {foodName}";
         
-        // Сбрасываем прозрачность и масштаб
-        foodPickupText.alpha = 0f;
+        Color textColor = foodPickupText.color;
+        textColor.a = 0f;
+        foodPickupText.color = textColor;
         foodPickupText.transform.localScale = Vector3.zero;
-        
-        // Включаем объект
+
+// Включаем объект
         foodPickupText.gameObject.SetActive(true);
-        
-        // Создаем последовательность анимации
+
+// Создаем последовательность анимации
         Sequence animSequence = DOTween.Sequence();
-        
-        // Появление
+
+// Появление
         animSequence.Append(foodPickupText.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack));
         animSequence.Join(foodPickupText.DOFade(1f, 0.2f));
         
