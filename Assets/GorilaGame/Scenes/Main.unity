@@ -7630,7 +7630,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnPos: {fileID: 1046038954}
   _movePos1: {fileID: 1560944240}
-  _noFoodWindow: {fileID: 0}
+  _noFoodWindow: {fileID: 1216706421}
+  _fullSell: {fileID: 257373659}
+  _wrongSell: {fileID: 907979642}
   _customers:
   - {fileID: 2581576797565053737, guid: d075f9a51c42b3944bb248f27b420fc2, type: 3}
   - {fileID: 7109578156669171959, guid: 91a775d32c5298745bb22af9b6ce9ee4, type: 3}
@@ -9975,7 +9977,7 @@ Transform:
   m_GameObject: {fileID: 1046038953}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.69, y: 0.368, z: -6.91}
+  m_LocalPosition: {x: 5.69, y: 0.12, z: -6.91}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12953,7 +12955,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1285523203}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 846758589}
+        m_TargetAssemblyTypeName: CustomerMoveController, Assembly-CSharp
+        m_MethodName: Sell
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1285523203
 MonoBehaviour:
   m_ObjectHideFlags: 0

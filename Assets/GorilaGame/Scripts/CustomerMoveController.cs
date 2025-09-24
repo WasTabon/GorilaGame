@@ -12,15 +12,27 @@ public class CustomerMoveController : MonoBehaviour
     [SerializeField] private CustomerController[] _customers;
     
     private CustomerController _currentCustomer;
+    private bool _waitingForCustomerReturn;
 
     private void Start()
     {
         CustomerSpawnHandler();
     }
 
+    private void Update()
+    {
+        // Проверяем вернулся ли покупатель к спавну
+        if (_waitingForCustomerReturn && _currentCustomer != null && _currentCustomer._reachedSpawn)
+        {
+            DestroyCurrentCustomer();
+            _waitingForCustomerReturn = false;
+            CustomerSpawnHandler();
+        }
+    }
+
     private void CustomerSpawnHandler()
     {
-        if (_currentCustomer == null)
+        if (_currentCustomer == null && !_waitingForCustomerReturn)
         {
             int random = Random.Range(0, _customers.Length);
 
@@ -55,7 +67,7 @@ public class CustomerMoveController : MonoBehaviour
             // Есть нужная еда - даем полную цену
             InventoryController.Instance.UseCookedFood(neededFood);
             InventoryController.Instance.coins += 15;
-            _fullSell.SetActive(true);
+            if (_fullSell != null) _fullSell.SetActive(true);
         }
         else
         {
@@ -65,12 +77,12 @@ public class CustomerMoveController : MonoBehaviour
             
             InventoryController.Instance.UseCookedFood(randomFood);
             InventoryController.Instance.coins += 5;
-            _wrongSell.SetActive(true);
+            if (_wrongSell != null) _wrongSell.SetActive(true);
         }
         
-        // Убираем текущего покупателя и спавним нового
-        DestroyCurrentCustomer();
-        CustomerSpawnHandler();
+        // Отправляем покупателя обратно к спавну
+        _currentCustomer.StartReturning();
+        _waitingForCustomerReturn = true;
     }
     
     private void DestroyCurrentCustomer()

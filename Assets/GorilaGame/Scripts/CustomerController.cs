@@ -18,13 +18,13 @@ public class CustomerController : MonoBehaviour
     private Transform _movePos2;
 
     private bool _isInitialized;
+    private bool _isReturning;
     public bool _reachedDestination;
+    public bool _reachedSpawn;
 
     private void Start()
     {
         _dialogueBox.DOScale(Vector3.zero, 0f);
-        
-        // доробити клієнтів і продаж і зробити прокачку
     }
 
     public void Initiallize(Transform movePos1, Transform movePo2)
@@ -35,15 +35,31 @@ public class CustomerController : MonoBehaviour
         _movePos2 = movePo2;
         _isInitialized = true;
         _reachedDestination = false;
+        _reachedSpawn = false;
+        _isReturning = false;
         
         SetWalkAnimation(true);
     }
 
+    public void StartReturning()
+    {
+        _isReturning = true;
+        _reachedDestination = false;
+        SetWalkAnimation(true);
+        
+        // Скрываем диалоговое окно
+        _dialogueBox.DOScale(Vector3.zero, 0.3f);
+    }
+
     private void Update()
     {
-        if (_isInitialized && !_reachedDestination)
+        if (_isInitialized && !_reachedDestination && !_isReturning)
         {
             MoveToTarget();
+        }
+        else if (_isReturning && !_reachedSpawn)
+        {
+            ReturnToSpawn();
         }
     }
     
@@ -82,6 +98,28 @@ public class CustomerController : MonoBehaviour
             
             _dialogueBox.DOScale(Vector3.one, 0.5f)
                 .SetEase(Ease.InOutBack);
+        }
+    }
+
+    private void ReturnToSpawn()
+    {
+        float distanceToSpawn = Vector3.Distance(transform.position, _movePos1.position);
+        
+        if (distanceToSpawn > _stopDistance)
+        {
+            Vector3 direction = (_movePos1.position - transform.position).normalized;
+            direction.y = 0f;
+            transform.position += direction * _moveSpeed * Time.deltaTime;
+            
+            if (direction != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(direction);
+            }
+        }
+        else
+        {
+            _reachedSpawn = true;
+            SetWalkAnimation(false);
         }
     }
     
