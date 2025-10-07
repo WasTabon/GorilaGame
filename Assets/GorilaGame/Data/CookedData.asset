@@ -15,46 +15,46 @@ MonoBehaviour:
   cookedFoodItems:
   - cookedFoodType: 0
     foodName: Banana Pizza
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 53fbd5dca3770744088d32b0dbc30346, type: 3}
   - cookedFoodType: 1
     foodName: Banana Milk
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 3a3711483791e1f4d9eda542c2267f06, type: 3}
   - cookedFoodType: 2
     foodName: Fish Banana
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: c8b6203c84d561d43ada03192104227f, type: 3}
   - cookedFoodType: 3
     foodName: Spicy Banana
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 03e03859c985aa74db7cfbeb38fb13ab, type: 3}
   - cookedFoodType: 4
     foodName: Banana Omelette
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 3a2248baaa9e8864196217b4c5d21877, type: 3}
   - cookedFoodType: 5
     foodName: Milk Pizza
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 07f68b3c5b1b60745b01cb502865a838, type: 3}
   - cookedFoodType: 6
     foodName: Fish Pizza
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 947cca41f41a6564aa2263b342d634ed, type: 3}
   - cookedFoodType: 7
     foodName: Spicy Pizza
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 1ce956c37b1e20043a51fa382e421902, type: 3}
   - cookedFoodType: 8
     foodName: Egg Pizza
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 07f68b3c5b1b60745b01cb502865a838, type: 3}
   - cookedFoodType: 9
     foodName: Fish Milk
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: d47ecef6827b6ed4dbcd2b62f66a9594, type: 3}
   - cookedFoodType: 10
     foodName: Spicy Milk
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 83859a467d0bf804a9a06721e855060d, type: 3}
   - cookedFoodType: 11
     foodName: Milk Egg
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 48f2ddbac384f1040a538733a5509b28, type: 3}
   - cookedFoodType: 12
     foodName: Spicy Fish
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 4b514a7e8325c324297d70850f02993a, type: 3}
   - cookedFoodType: 13
     foodName: Fish Egg
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 3a02273287cf15d4a8bb96a8ddcf4238, type: 3}
   - cookedFoodType: 14
     foodName: Pepper Egg
-    foodIcon: {fileID: 0}
+    foodIcon: {fileID: 21300000, guid: 4218f151591694949b9dad647d39672a, type: 3}
