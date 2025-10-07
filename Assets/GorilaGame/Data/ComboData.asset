@@ -15,46 +15,46 @@ MonoBehaviour:
   foodCombinations:
   - comboName: Banana Pizza
     ingredients: 0000000001000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 53fbd5dca3770744088d32b0dbc30346, type: 3}
   - comboName: Banana Milk
     ingredients: 0000000002000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 3a3711483791e1f4d9eda542c2267f06, type: 3}
   - comboName: Fish Banana
     ingredients: 0000000003000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: c8b6203c84d561d43ada03192104227f, type: 3}
   - comboName: Spicy Banana
     ingredients: 0000000004000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 03e03859c985aa74db7cfbeb38fb13ab, type: 3}
   - comboName: Banana Omelette
     ingredients: 0000000005000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 3a2248baaa9e8864196217b4c5d21877, type: 3}
   - comboName: Milk Pizza
     ingredients: 0100000002000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 07f68b3c5b1b60745b01cb502865a838, type: 3}
   - comboName: Fish Pizza
     ingredients: 0100000003000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 947cca41f41a6564aa2263b342d634ed, type: 3}
   - comboName: Spicy Pizza
     ingredients: 0100000004000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 1ce956c37b1e20043a51fa382e421902, type: 3}
   - comboName: Egg Pizza
     ingredients: 0100000005000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 07f68b3c5b1b60745b01cb502865a838, type: 3}
   - comboName: Fish Milk
     ingredients: 0200000003000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: d47ecef6827b6ed4dbcd2b62f66a9594, type: 3}
   - comboName: Spicy Milk
     ingredients: 0200000004000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 83859a467d0bf804a9a06721e855060d, type: 3}
   - comboName: Milk Egg
     ingredients: 0200000005000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 48f2ddbac384f1040a538733a5509b28, type: 3}
   - comboName: Spicy Fish
     ingredients: 0300000004000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 4b514a7e8325c324297d70850f02993a, type: 3}
   - comboName: Fish Egg
     ingredients: 0300000005000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 3a02273287cf15d4a8bb96a8ddcf4238, type: 3}
   - comboName: Pepper Egg
     ingredients: 0400000005000000
-    comboIcon: {fileID: 0}
+    comboIcon: {fileID: 21300000, guid: 4218f151591694949b9dad647d39672a, type: 3}
