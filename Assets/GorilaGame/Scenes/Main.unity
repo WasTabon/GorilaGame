@@ -2229,7 +2229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cookedFoodData: {fileID: 11400000, guid: 5205e86005349cb44a403afd058372ee, type: 2}
-  _cantCookIcon: {fileID: 21300000, guid: 7c8a787ff6f174b42bb69e76e53f4ca3, type: 3}
+  _cantCookIcon: {fileID: 21300000, guid: 79a28d58d726bbe419df4f7ab68ba42b, type: 3}
   _comboPanel: {fileID: 1167318242}
   _comboIcon: {fileID: 1400478290}
   _comboName: {fileID: 449131034}
