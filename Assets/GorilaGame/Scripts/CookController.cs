@@ -31,6 +31,15 @@ public class CookController : MonoBehaviour
     [SerializeField] private RectTransform _cookButtons;
     [SerializeField] private float animationDuration = 0.5f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip _startCookSound;
+    [SerializeField] private AudioClip _selectIngredientSound;
+    [SerializeField] private AudioClip _cookingProcessSound;
+    [SerializeField] private AudioClip _successCookSound;
+    [SerializeField] private AudioClip _failCookSound;
+    [SerializeField] private AudioClip _stopCookSound;
+    [SerializeField] private AudioClip _openInventorySound;
+
     private FoodType _food1;
     private FoodType _food2;
     
@@ -59,7 +68,11 @@ public class CookController : MonoBehaviour
     public void OpenCookInventory()
     {
         if (isCook)
+        {
             _inventoryPanel.SetActive(true);
+            if (_openInventorySound != null)
+                MusicController.Instance.PlaySpecificSound(_openInventorySound);
+        }
     }
     
     public void SetFood1(FoodType food, Sprite icon)
@@ -70,7 +83,11 @@ public class CookController : MonoBehaviour
         _icon1.gameObject.SetActive(true);
         _icon1.sprite = icon;
         _inventoryPanel.SetActive(false);
+        
+        if (_selectIngredientSound != null)
+            MusicController.Instance.PlaySpecificSound(_selectIngredientSound);
     }
+    
     public void SetFood2(FoodType food, Sprite icon)
     {
         isFood2 = true;
@@ -79,13 +96,15 @@ public class CookController : MonoBehaviour
         _icon2.gameObject.SetActive(true);
         _icon2.sprite = icon;
         _inventoryPanel.SetActive(false);
+        
+        if (_selectIngredientSound != null)
+            MusicController.Instance.PlaySpecificSound(_selectIngredientSound);
     }
 
     private void Update()
     {
         if (isFood1 && isFood2)
         {
-            // СНАЧАЛА сохраняем ингредиенты
             FoodType savedFood1 = _food1;
             FoodType savedFood2 = _food2;
         
@@ -103,12 +122,14 @@ public class CookController : MonoBehaviour
             _icon2.sprite = null;
 
             _cookParticle.SetActive(true);
+            
+            if (_cookingProcessSound != null)
+                MusicController.Instance.PlaySpecificSound(_cookingProcessSound);
         
-            DOVirtual.DelayedCall(1.5f, () =>
+            DOVirtual.DelayedCall(2.5f, () =>
             {
                 Debug.Log("Start Crafting");
             
-                // Используем сохраненные ингредиенты
                 FoodType[] ingredients = new FoodType[] { savedFood1, savedFood2 };
 
                 if (RecipeManager.Instance.CanCraftRecipe(ingredients, _foodComboData))
@@ -119,19 +140,24 @@ public class CookController : MonoBehaviour
                     _comboIcon.sprite = data?.comboIcon;
                     _comboPanel.SetActive(true);
 
-                    // Добавляем готовое блюдо в инвентарь
                     if (data != null)
                     {
                         Debug.Log("Added");
                         CookedFoodType cookedFoodType = _cookedFoodData.GetCookedFoodTypeByName(data.comboName);
                         InventoryController.Instance.AddCookedFood(cookedFoodType);
                     }
+                    
+                    if (_successCookSound != null)
+                        MusicController.Instance.PlaySpecificSound(_successCookSound);
                 }
                 else
                 {
                     _comboName.text = "You lost your ingredients";
                     _comboIcon.sprite = _cantCookIcon;
                     _comboPanel.SetActive(true);
+                    
+                    if (_failCookSound != null)
+                        MusicController.Instance.PlaySpecificSound(_failCookSound);
                 }
 
                 Debug.Log("Off");
@@ -143,6 +169,10 @@ public class CookController : MonoBehaviour
     public void StartCook()
     {
         isCook = true;
+        
+        if (_startCookSound != null)
+            MusicController.Instance.PlaySpecificSound(_startCookSound);
+        
         AnimateMoveButtonsOut();
     }
     
@@ -187,6 +217,10 @@ public class CookController : MonoBehaviour
     public void StopCook()
     {
         isCook = false;
+        
+        if (_stopCookSound != null)
+            MusicController.Instance.PlaySpecificSound(_stopCookSound);
+        
         AnimateCookButtonsOut();
     }
     

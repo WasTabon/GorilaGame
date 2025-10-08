@@ -8,7 +8,7 @@ using DG.Tweening;
 public class CatchController : MonoBehaviour
 {
     public static CatchController Instance;
-
+    
     [Header("Cameras")]
     [SerializeField] private CinemachineVirtualCamera _mainCamera;
     [SerializeField] private CinemachineVirtualCamera _secondCamera;

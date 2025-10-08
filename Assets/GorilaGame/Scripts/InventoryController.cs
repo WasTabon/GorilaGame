@@ -35,6 +35,8 @@ public class InventoryController : MonoBehaviour
 {
     public static InventoryController Instance;
 
+    [SerializeField] private AudioClip _sound;
+    
     private int _coins;
 
     public int coins
@@ -82,6 +84,8 @@ public class InventoryController : MonoBehaviour
     
     public void AddFood(FoodType foodType)
     {
+        MusicController.Instance.PlaySpecificSound(_sound);
+        
         foodsInInventory.Add(foodType);
         
         GameObject food = Instantiate(foodCard, content);
