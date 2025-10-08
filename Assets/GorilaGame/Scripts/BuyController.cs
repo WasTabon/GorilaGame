@@ -4,7 +4,7 @@ using UnityEngine.Purchasing;
 
 public class BuyController : MonoBehaviour
 {
-    public string _donateId = "com.spinplanet.inappcoins1";
+    public string _donateId = "com.gorillacooking.coins";
     
     public GameObject loadingButton;
     public AudioClip buySound;
@@ -16,6 +16,8 @@ public class BuyController : MonoBehaviour
         if (product.definition.id == _donateId)
         {
             Debug.Log("Complete");
+
+            InventoryController.Instance.coins += 100;
             
             MusicController.Instance.PlaySpecificSound(buySound);
             loadingButton.SetActive(false);
